@@ -1,3 +1,8 @@
+/**
+ * Create the voyage
+ * @param c         domElement  the container
+ * @constructor
+ */
 var Voyage = function(c)
 {
     var container = c;
@@ -5,6 +10,11 @@ var Voyage = function(c)
     var camera;
     var renderer;
     var _this = this;
+
+    // constructor
+    (function(){
+        _this.init();
+    })();
 
     // Private methods:
 
@@ -17,12 +27,10 @@ var Voyage = function(c)
         camera.aspect = window.innerWidth / window.innerHeight;
     };
 
-    // Public methods:
-
     /**
      * Initialize
      */
-    this.init = function()
+    var init = function()
     {
         renderer    = new THREE.WebGLRenderer();
         scene       = new THREE.Scene();
@@ -39,6 +47,8 @@ var Voyage = function(c)
         // Event listeners:
         window.addEventListener('resize', resizeListener);
     };
+
+    // Public methods:
 
     /**
      * Animation handler
