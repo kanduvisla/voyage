@@ -63,12 +63,14 @@ var Texture = function(pWidth, pHeight, pType, pOptions)
 
         ctx.save();
 
+        var aspect = width > height ? width : height;
+
         /* Scale random iterations onto the canvas to generate Perlin noise. */
         for (var size = detail; size <= noise.width; size *= 2) {
             var x = (Math.random() * (noise.width - size)) | 0,
-                y = (Math.random() * (noise.height - size)) | 0;
+                y = (Math.random() * (noise.width - size)) | 0;
             ctx.globalAlpha = detail / size;
-            ctx.drawImage(noise, x, y, size, size, 0, 0, width, height);
+            ctx.drawImage(noise, x, y, size, size, 0, 0, aspect, aspect);
         }
 
         ctx.restore();
