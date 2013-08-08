@@ -9,7 +9,6 @@
 var Texture = function(pWidth, pHeight, pType, pOptions)
 {
     // For debugging purposes:
-    var debug   = true;
     var image;
     var ctx;
     var baseImage;
@@ -18,6 +17,7 @@ var Texture = function(pWidth, pHeight, pType, pOptions)
     var _this   = this;
     var type    = pType;
     var options = pOptions;
+    var debug   = options.debug || false;
 
     if(pOptions.repeat) {
         options.repeatSize = pOptions.repeatSize || width / 4;
@@ -151,7 +151,10 @@ var Texture = function(pWidth, pHeight, pType, pOptions)
             }
             ctx.putImageData(topImagePart, 0, 0);
         }
+        // Draw the final image:
         baseImage.getContext('2d').drawImage(image, 0, 0);
     })();
 
+    // Public properties
+    this.baseImage = baseImage;
 };

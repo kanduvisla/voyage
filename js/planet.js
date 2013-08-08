@@ -22,10 +22,17 @@ var Planet = function(pRadius, pTextures, pHalo, pRings)
      */
     (function(){
         object = new THREE.Object3D();
+        var texture = new THREE.Texture(textures.lightMap.baseImage);
+        texture.needsUpdate = true;
         var mesh = new THREE.Mesh(
             new THREE.SphereGeometry(radius, 40, 40),
-            debugMaterial
+            // debugMaterial
+            new THREE.MeshLambertMaterial({
+                // color: 0xFF0000,
+                map: texture
+            })
         );
+        console.log(textures.lightMap.baseImage);
         object.add(mesh);
     })();
 

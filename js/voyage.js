@@ -11,11 +11,6 @@ var Voyage = function(c)
     var renderer;
     var _this = this;
 
-    // constructor
-    (function(){
-        _this.init();
-    })();
-
     // Private methods:
 
     /**
@@ -48,6 +43,11 @@ var Voyage = function(c)
         window.addEventListener('resize', resizeListener);
     };
 
+    // constructor
+    (function(){
+        init();
+    })();
+
     // Public methods:
 
     /**
@@ -71,11 +71,22 @@ var Voyage = function(c)
         {
             case 0 :
             {
+                // For debugging purposes: create a light:
+                var light = new THREE.DirectionalLight(0xFFFFFF);
+                light.position.set(1, 0.5, -1);
+                scene.add(light);
+
                 // Create the planet:
                 console.log('Creating planet...');
+                var lightMap = new Texture(1024, 512, 'noise', {
+                    repeat: true
+//                    debug: true
+                });
                 var planet = new Planet(
                     100,
-                    {},
+                    {
+                        lightMap: lightMap
+                    },
                     {},
                     false
                 );
