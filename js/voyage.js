@@ -48,5 +48,50 @@ var Voyage = function(c)
         requestAnimationFrame(_this.animate);
         renderer.clear();
         renderer.render(scene, camera);
-    }
+    };
+
+    /**
+     * Randomize the scene, this is where the main fun happens:
+     */
+    this.randomize = function()
+    {
+        console.log('Randomizing...');
+        var type = Math.floor(Math.random());   // This determines what kind of scene we are going to make
+        switch(type)
+        {
+            case 0 :
+            {
+                // Create the planet:
+                console.log('Creating planet...');
+                var planet = new Planet(
+                    100,
+                    {},
+                    {},
+                    false
+                );
+                scene.add(planet.object);
+                camera.position.z = -500;
+                camera.lookAt(scene.position);
+                break;
+            }
+            case 1 :
+            {
+                // nebula
+
+                break;
+            }
+            case 2 :
+            {
+                // galaxy
+
+                break;
+            }
+            case 3 :
+            {
+                // star field
+
+                break;
+            }
+        }
+    };
 };
