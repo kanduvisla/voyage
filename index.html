@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Voyage</title>
+	<link rel="stylesheet" href="css/voyage.css">
+</head>
+<body>
+	<div id="container"></div>
+
+	<script type="text/javascript" src="bower_components/chic/lib/chic.js"></script>
+	<script type="text/javascript" src="bower_components/threejs/build/three.min.js"></script>
+	<script type="text/javascript" src="js/voyage.js"></script>
+	<script type="text/javascript">
+		// The voyage starts here...
+
+		var voyage = new Voyage(document.querySelector('#container'));
+		voyage.init();
+		voyage.animate();
+
+	</script>
+</body>
+</html>
