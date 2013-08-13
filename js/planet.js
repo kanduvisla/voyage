@@ -1,17 +1,19 @@
 /**
  * A planet
+ * @param pCamera       camera
  * @param pRadius       int
  * @param pTextures     object  {lightMap, darkMap, cloudMap, specularMap [,ringMap]}
- * @param pHalo         object  {color, opacity, innerSize, outerSize}
+ * @param pHalo         object  {color, innerSize, outerSize}
  * @param pRings        object  {active, radius, width}
  * @constructor
  */
-var Planet = function(pRadius, pTextures, pHalo, pRings)
+var Planet = function(pCamera, pRadius, pTextures, pHalo, pRings)
 {
     var radius      = pRadius;
     var textures    = pTextures;
     var halo        = pHalo;
     var rings       = pRings !== null ? pRings : {active: false};
+    var camera      = pCamera;
 
     var debugMaterial   = new THREE.MeshBasicMaterial({color: 0xffffff, wireframe: true});
 
@@ -22,6 +24,26 @@ var Planet = function(pRadius, pTextures, pHalo, pRings)
      */
     (function(){
         object = new THREE.Object3D();
+
+        // The halo:
+        var haloMaterial = new THREE.ShaderMaterial({
+            uniforms: {
+                "c":        {type: "f", value: pHalo.innerSize},
+                "p":        {type: "f", value: pHalo.outerSize},
+                glowColor:  {type: "c", value: new THREE.Color(pHalo.color)},
+                viewVector: {type: "v3", value: camera.position}
+            },
+            vertexShader:   document.getElementById('haloVertexShader').textContent,
+            fragmentShader: document.getElementById('haloFragmentShader').textContent,
+            side:           THREE.BackSide,
+            blending:       THREE.AdditiveBlending,
+            transparent:    true
+        });
+        var halo = new THREE.Mesh(
+            new THREE.SphereGeometry(radius * 1.05, 40, 40),
+            haloMaterial
+        );
+        object.add(halo);
 
         // The sphere:
         var lightTexture = new THREE.Texture(textures.lightMap.baseImage);
@@ -65,8 +87,6 @@ var Planet = function(pRadius, pTextures, pHalo, pRings)
                     transparent: true
                 })
             );
-
-            console.log(geometry);
             object.add(ring);
         }
 
@@ -77,12 +97,6 @@ var Planet = function(pRadius, pTextures, pHalo, pRings)
         );
         object.add(clouds);
 
-        // The halo:
-        var halo = new THREE.Mesh(
-            new THREE.SphereGeometry(radius * 1.05, 40, 40),
-            debugMaterial
-        );
-        object.add(halo);
     })();
 
     // Public properties:

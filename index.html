@@ -6,7 +6,34 @@
 </head>
 <body>
 	<div id="container"></div>
+	<!-- Shaders: -->
 
+	<!-- Halo shader (thanks to Lee Stemkoski: http://stemkoski.github.io/Three.js/Shader-Glow.html) -->
+	<script id="haloVertexShader" type="x-shader/x-vertex">
+		uniform vec3 viewVector;
+		uniform float c;
+		uniform float p;
+		varying float intensity;
+		void main()
+		{
+			vec3 vNormal = normalize( normalMatrix * normal );
+			vec3 vNormel = normalize( normalMatrix * viewVector );
+			intensity = pow( c - dot(vNormal, vNormel), p );
+			gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+		}
+	</script>
+
+	<script id="haloFragmentShader" type="x-shader/x-vertex">
+		uniform vec3 glowColor;
+		varying float intensity;
+		void main()
+		{
+			vec3 glow = glowColor * intensity;
+			gl_FragColor = vec4( glow, 1.0 );
+		}
+	</script>
+
+	<!-- Scripts: -->
 	<script type="text/javascript" src="bower_components/chic/lib/chic.js"></script>
 	<script type="text/javascript" src="bower_components/threejs/build/three.min.js"></script>
 	<script type="text/javascript" src="js/voyage.js"></script>

@@ -78,7 +78,7 @@ var Voyage = function(c)
             case 0 :
             {
                 // For debugging purposes: create a light:
-                var light = new THREE.AmbientLight(0xFFFFFF);
+                var light = new THREE.DirectionalLight(0xFFFFFF);
                 light.position.set(1, 0.5, -1);
                 scene.add(light);
 
@@ -95,12 +95,17 @@ var Voyage = function(c)
                 });
 
                 var planet = new Planet(
+                    camera,
                     100,
                     {
                         lightMap: lightMap,
                         ringMap: ringMap
                     },
-                    {},
+                    {
+                        color: 0xFFFFFF,
+                        innerSize:.85,
+                        outerSize: 6
+                    },
                     {
                         active: true,
                         radius: 200,
