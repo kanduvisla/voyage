@@ -88,10 +88,15 @@ var Voyage = function(c)
                         lightMap: lightMap
                     },
                     {},
-                    false
+                    {
+                        active: true,
+                        radius: 200,
+                        width: .5
+                    }
                 );
                 scene.add(planet.object);
                 camera.position.z = -500;
+                camera.position.y = 100;
                 camera.lookAt(scene.position);
                 break;
             }
