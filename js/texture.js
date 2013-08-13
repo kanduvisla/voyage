@@ -76,6 +76,22 @@ var Texture = function(pWidth, pHeight, pType, pOptions)
         ctx.restore();
     };
 
+    var stripes = function()
+    {
+        var currentY = 20;
+        // console.log('1px solid #' + options.color.toString(16));
+        ctx.lineWidth = 20;
+        while(currentY < height) {
+            ctx.strokeStyle = '#' + options.color.toString(16);
+            ctx.beginPath();
+            ctx.moveTo(0, currentY);
+            ctx.lineTo(width, currentY);
+            ctx.stroke();
+            // currentY += Math.random() * (height / 10);
+            currentY += 40;
+        }
+    };
+
     /**
      * Constructor:
      */
@@ -108,6 +124,18 @@ var Texture = function(pWidth, pHeight, pType, pOptions)
                 perlinNoise();
                 break;
             }
+            case 'stripes' :
+            {
+                console.log('Creating stripes texture...');
+                stripes();
+                break;
+            }
+        }
+        if(debug) {
+            ctx.fillStyle = '#ff0000';
+            ctx.fillRect(0, 0, width/10, height/10);
+            ctx.fillStyle = '#00ff00';
+            ctx.fillRect(width - width/10, height - height/10, width/10, height/10);
         }
         if(pOptions.repeat)
         {

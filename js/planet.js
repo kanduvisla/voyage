@@ -24,14 +24,14 @@ var Planet = function(pRadius, pTextures, pHalo, pRings)
         object = new THREE.Object3D();
 
         // The sphere:
-        var texture = new THREE.Texture(textures.lightMap.baseImage);
-        texture.needsUpdate = true;
+        var lightTexture = new THREE.Texture(textures.lightMap.baseImage);
+        lightTexture.needsUpdate = true;
         var sphere = new THREE.Mesh(
             new THREE.SphereGeometry(radius, 40, 40),
             // debugMaterial
             new THREE.MeshLambertMaterial({
                 // color: 0xFF0000,
-                map: texture
+                map: lightTexture
             })
         );
         object.add(sphere);
@@ -40,17 +40,33 @@ var Planet = function(pRadius, pTextures, pHalo, pRings)
             // Add a ring:
             var curve = new THREE.SplineCurve3([
                 new THREE.Vector3(0, 0, 0),
-                new THREE.Vector3(0, 1, 0)
+                new THREE.Vector3(0, 200, 0)
             ]);
-            var geometry = new THREE.TubeGeometry(curve, 1, rings.radius, 40);
-            for(var i=40; i<80; i++) {
+            var steps = 200;
+            var geometry = new THREE.TubeGeometry(curve, 1, rings.radius, steps);
+            for(var i=steps; i<steps*2; i++) {
                 geometry.vertices[i].y = 0;
                 geometry.vertices[i].divideScalar(1 + rings.width);
+                geometry.faceVertexUvs[0][i-steps][0].x = 0;
+                geometry.faceVertexUvs[0][i-steps][0].y = 0;
+                geometry.faceVertexUvs[0][i-steps][1].x = 1;
+                geometry.faceVertexUvs[0][i-steps][1].y = 1;
+                geometry.faceVertexUvs[0][i-steps][2].x = 1;
+                geometry.faceVertexUvs[0][i-steps][2].y = 1;
+                geometry.faceVertexUvs[0][i-steps][3].x = 0;
+                geometry.faceVertexUvs[0][i-steps][3].y = 0;
             }
+            var ringTexture = new THREE.Texture(textures.ringMap.baseImage);
+            ringTexture.needsUpdate = true;
             var ring = new THREE.Mesh(
                 geometry,
-                debugMaterial
+                new THREE.MeshLambertMaterial({
+                    map: ringTexture,
+                    transparent: true
+                })
             );
+
+            console.log(geometry);
             object.add(ring);
         }
 

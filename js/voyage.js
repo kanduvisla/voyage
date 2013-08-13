@@ -10,6 +10,7 @@ var Voyage = function(c)
     var camera;
     var renderer;
     var _this = this;
+    var step = 0;
 
     // Private methods:
 
@@ -56,8 +57,13 @@ var Voyage = function(c)
     this.animate = function()
     {
         requestAnimationFrame(_this.animate);
+
         renderer.clear();
         renderer.render(scene, camera);
+        camera.lookAt(scene.position);
+        step += 0.002;
+        camera.position.x = Math.sin(step) * 500;
+        camera.position.z = Math.cos(step) * 500;
     };
 
     /**
@@ -72,7 +78,7 @@ var Voyage = function(c)
             case 0 :
             {
                 // For debugging purposes: create a light:
-                var light = new THREE.DirectionalLight(0xFFFFFF);
+                var light = new THREE.AmbientLight(0xFFFFFF);
                 light.position.set(1, 0.5, -1);
                 scene.add(light);
 
@@ -82,10 +88,17 @@ var Voyage = function(c)
                     repeat: true
 //                    debug: true
                 });
+
+                var ringMap = new Texture(512, 512, 'stripes', {
+                    color: 0xFFFFFF/*,
+                    debug: true*/
+                });
+
                 var planet = new Planet(
                     100,
                     {
-                        lightMap: lightMap
+                        lightMap: lightMap,
+                        ringMap: ringMap
                     },
                     {},
                     {
@@ -96,7 +109,7 @@ var Voyage = function(c)
                 );
                 scene.add(planet.object);
                 camera.position.z = -500;
-                camera.position.y = 100;
+                camera.position.y = 200;
                 camera.lookAt(scene.position);
                 break;
             }
