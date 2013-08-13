@@ -22,6 +22,8 @@ var Planet = function(pRadius, pTextures, pHalo, pRings)
      */
     (function(){
         object = new THREE.Object3D();
+
+        // The sphere:
         var texture = new THREE.Texture(textures.lightMap.baseImage);
         texture.needsUpdate = true;
         var sphere = new THREE.Mesh(
@@ -36,7 +38,6 @@ var Planet = function(pRadius, pTextures, pHalo, pRings)
 
         if(rings.active) {
             // Add a ring:
-            // new THREE.RingGeometry())
             var curve = new THREE.SplineCurve3([
                 new THREE.Vector3(0, 0, 0),
                 new THREE.Vector3(0, 1, 0)
@@ -46,9 +47,26 @@ var Planet = function(pRadius, pTextures, pHalo, pRings)
                 geometry.vertices[i].y = 0;
                 geometry.vertices[i].divideScalar(1 + rings.width);
             }
-            var ring = new THREE.Mesh(geometry, debugMaterial);
+            var ring = new THREE.Mesh(
+                geometry,
+                debugMaterial
+            );
             object.add(ring);
         }
+
+        // Clouds:
+        var clouds = new THREE.Mesh(
+            new THREE.SphereGeometry(radius * 1.01, 40, 40),
+            debugMaterial
+        );
+        object.add(clouds);
+
+        // The halo:
+        var halo = new THREE.Mesh(
+            new THREE.SphereGeometry(radius * 1.05, 40, 40),
+            debugMaterial
+        );
+        object.add(halo);
     })();
 
     // Public properties:
