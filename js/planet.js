@@ -43,7 +43,6 @@ var Planet = function(pCamera, pRadius, pTextures, pHalo, pRings)
             new THREE.SphereGeometry(radius * 1.05, 40, 40),
             haloMaterial
         );
-        object.add(halo);
 
         // The sphere:
         var lightTexture = new THREE.Texture(textures.lightMap.baseImage);
@@ -56,7 +55,6 @@ var Planet = function(pCamera, pRadius, pTextures, pHalo, pRings)
                 map: lightTexture
             })
         );
-        object.add(sphere);
 
         if(rings.active) {
             // Add a ring:
@@ -89,6 +87,10 @@ var Planet = function(pCamera, pRadius, pTextures, pHalo, pRings)
             );
             object.add(ring);
         }
+
+        object.add(sphere);
+        object.add(halo);
+
 
         // Clouds:
         var clouds = new THREE.Mesh(

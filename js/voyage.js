@@ -28,17 +28,27 @@ var Voyage = function(c)
      */
     var init = function()
     {
-        renderer    = new THREE.WebGLRenderer();
+        renderer    = new THREE.WebGLRenderer({antialias: true});
         scene       = new THREE.Scene();
         camera      = new THREE.PerspectiveCamera(
             45,
             window.innerWidth / window.innerHeight,
             0.1,
-            10000
+            15000
         );
         renderer.setSize(window.innerWidth, window.innerHeight);
         scene.add(camera);
         container.appendChild(renderer.domElement);
+
+        // Create a sphere for the background:
+        var background = new THREE.Mesh(
+            new THREE.SphereGeometry(10000, 10, 10),
+            new THREE.MeshBasicMaterial({
+                color: 0x000000,
+                side: THREE.BackSide
+            })
+        );
+        scene.add(background);
 
         // Event listeners:
         window.addEventListener('resize', resizeListener);
