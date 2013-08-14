@@ -29,6 +29,10 @@ var Texture = function(pWidth, pHeight, pType, pOptions)
 
     // private functions:
 
+    /**
+     * Fill with a sold
+     * @param color
+     */
     var fill = function(color)
     {
         ctx.fillStyle = color.toString(16);
@@ -76,6 +80,9 @@ var Texture = function(pWidth, pHeight, pType, pOptions)
         ctx.restore();
     };
 
+    /**
+     * Stripes
+     */
     var stripes = function()
     {
         var currentY = 20;
@@ -92,6 +99,19 @@ var Texture = function(pWidth, pHeight, pType, pOptions)
         }
     };
 
+    var composite = function()
+    {
+        for(var t in options.textures) {
+            var obj = options.textures[t];
+            if(!obj.opacity)    { obj.opacity = 1; }
+            if(!obj.blendmode)  { obj.blendmode = 'source-over'; }
+            // obj.texture.baseImage.style.opacity = obj.opacity;
+            ctx.globalAlpha                 = obj.opacity;
+            ctx.globalCompositeOperation    = obj.blendmode;
+            ctx.drawImage(obj.texture.baseImage, 0, 0);
+        }
+    };
+
     /**
      * Constructor:
      */
@@ -105,10 +125,7 @@ var Texture = function(pWidth, pHeight, pType, pOptions)
         image.height        = height;
         if(debug) {
             baseImage.style.zIndex = 100;
-            baseImage.style.position = 'fixed';
-            baseImage.style.left = '10px';
-            baseImage.style.top = '10px';
-            document.body.appendChild(baseImage);
+            document.body.insertBefore(baseImage, document.body.firstChild);
         }
         ctx = image.getContext('2d');
         switch(type) {
@@ -130,14 +147,14 @@ var Texture = function(pWidth, pHeight, pType, pOptions)
                 stripes();
                 break;
             }
+            case 'composite' :
+            {
+                console.log('Creating composite texture...');
+                composite();
+                break;
+            }
         }
-        if(debug) {
-            ctx.fillStyle = '#ff0000';
-            ctx.fillRect(0, 0, width/10, height/10);
-            ctx.fillStyle = '#00ff00';
-            ctx.fillRect(width - width/10, height - height/10, width/10, height/10);
-        }
-        if(pOptions.repeat)
+        if(options.repeat)
         {
             console.log('Repeating the texture...');
             // Repeat the image (this does some cropping):
@@ -178,6 +195,24 @@ var Texture = function(pWidth, pHeight, pType, pOptions)
                 i+=4;
             }
             ctx.putImageData(topImagePart, 0, 0);
+        }
+        // Debug rectangles:
+        if(debug) {
+            ctx.fillStyle = '#ff0000';
+            ctx.fillRect(0, 0, 10, 10);
+            ctx.fillStyle = '#00ff00';
+            ctx.fillRect(width - 10 - options.repeatSize,
+                height - 10 - options.repeatSize, 10, 10);
+        }
+        // Apply filters:
+        if(options.filters)
+        {
+            var filterTxt = '';
+            for(var key in options.filters)
+            {
+                filterTxt += key + '(' + options.filters[key] + ') ';
+            }
+            baseImage.style.webkitFilter = filterTxt;
         }
         // Draw the final image:
         baseImage.getContext('2d').drawImage(image, 0, 0);

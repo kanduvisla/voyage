@@ -43,12 +43,28 @@
 		// The voyage starts here...
 
 		// Let's try out textures:
-/*
-		var texture = new Texture(512, 512, 'noise', {
-			repeat: true
-
+		var texture = new Texture(512, 512, 'composite', {
+			textures: [
+				{
+					texture: new Texture(512, 512, 'color', {
+						color: 0xFF0000
+					})
+				},
+				{
+					texture: new Texture(512, 512, 'noise', {
+						filters: {brightness: 0.9,	contrast: 6},
+						repeat: true,
+						debug: true
+					}),
+					opacity: 0.5
+				}
+			],
+			debug: true
 		});
-*/
+
+		// And composites:
+
+/*
 
 		var container 	= document.querySelector('#container');
 		var voyage 		= new Voyage(container);
@@ -56,6 +72,7 @@
 		voyage.randomize();
 
 		container.addEventListener('click', voyage.randomize);
+*/
 
 	</script>
 </body>
