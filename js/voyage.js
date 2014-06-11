@@ -83,10 +83,14 @@ var Voyage = function(c)
     {
         // Generate starry background:
         console.log('Generating starry background...');
-        var starsNear = new Stars(2000, 10000, 30);
-        var starsFar  = new Stars(8000, 10000, 10);
+        var starsNear = new Stars(4000, 10000, 30);
+        var starsFar  = new Stars(16000, 10000, 10);
         scene.add(starsNear.object);
         scene.add(starsFar.object);
+
+        console.log('Generate spacefog...');
+        var spacefog = new Spacefog();
+        scene.add(spacefog.object);
 
         return;
 

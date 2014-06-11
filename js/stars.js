@@ -13,9 +13,6 @@ var Stars = function(starCount, starDistance, starSize)
         object = new THREE.Object3D();
 
         // Generate particles that form the stars:
-//        var starCount = 1800;
-//        var starDistance = 20000;
-
         var starMaterial = new THREE.ParticleBasicMaterial({
             color: 0xFFFFFF,
             size: starSize
