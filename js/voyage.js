@@ -34,7 +34,7 @@ var Voyage = function(c)
             45,
             window.innerWidth / window.innerHeight,
             0.1,
-            15000
+            25000
         );
         renderer.setSize(window.innerWidth, window.innerHeight);
         scene.add(camera);
@@ -42,7 +42,7 @@ var Voyage = function(c)
 
         // Create a sphere for the background:
         var background = new THREE.Mesh(
-            new THREE.SphereGeometry(10000, 10, 10),
+            new THREE.SphereGeometry(100000, 10, 10),
             new THREE.MeshBasicMaterial({
                 color: 0x000000,
                 side: THREE.BackSide
@@ -71,7 +71,7 @@ var Voyage = function(c)
         renderer.clear();
         renderer.render(scene, camera);
         camera.lookAt(scene.position);
-        step += 0.002;
+        step += 0.0002;
         camera.position.x = Math.sin(step) * 500;
         camera.position.z = Math.cos(step) * 500;
     };
@@ -81,12 +81,23 @@ var Voyage = function(c)
      */
     this.randomize = function()
     {
+        // Generate starry background:
+        console.log('Generating starry background...');
+        var starsNear = new Stars(2000, 10000, 30);
+        var starsFar  = new Stars(8000, 10000, 10);
+        scene.add(starsNear.object);
+        scene.add(starsFar.object);
+
+        return;
+
         console.log('Randomizing...');
         var type = Math.floor(Math.random());   // This determines what kind of scene we are going to make
         switch(type)
         {
             case 0 :
             {
+                // planet
+
                 // For debugging purposes: create a light:
                 var light = new THREE.DirectionalLight(0xFFFFFF);
                 light.position.set(1, 0.5, -1);

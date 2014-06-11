@@ -58,7 +58,7 @@ var Planet = function(pCamera, pRadius, pTextures, pHalo, pRings)
 
         if(rings.active) {
             // Add a ring:
-            var curve = new THREE.SplineCurve3([
+/*            var curve = new THREE.SplineCurve3([
                 new THREE.Vector3(0, 0, 0),
                 new THREE.Vector3(0, 200, 0)
             ]);
@@ -85,12 +85,11 @@ var Planet = function(pCamera, pRadius, pTextures, pHalo, pRings)
                     transparent: true
                 })
             );
-            object.add(ring);
+            object.add(ring);*/
         }
 
         object.add(sphere);
         object.add(halo);
-
 
         // Clouds:
         var clouds = new THREE.Mesh(
